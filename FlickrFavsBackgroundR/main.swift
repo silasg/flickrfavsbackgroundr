@@ -19,17 +19,6 @@ let flickrFetchCount = 100
 
 let flickrRestUrl = "https://api.flickr.com/services/rest/?method=flickr.favorites.getPublicList&api_key=\(flickrApiKey)&user_id=\(flickrUserId)&per_page=\(flickrFetchCount)&extras=url_k"
 
-let flickrFavsUrl = NSURL(string: flickrRestUrl)
-
-let flickrFavsDelegate = FlickrFavsParserDelegate()
-var xmlParser = NSXMLParser(contentsOfURL: flickrFavsUrl)!
-xmlParser.delegate = flickrFavsDelegate
-println("Getting and parsing Favorite Photos of Flickr User '\(flickrUserId)' with Size 'k' (2048 px min)...")
-xmlParser.parse()
-let urls = flickrFavsDelegate.getUrls()
-println("\(urls.count) Photos found.")
-var url = urls.first!
-println("Downloading first Photo from \(url) ...")
 let sem = dispatch_semaphore_create(0)
 
 func setDesktopBackground(imgUrl: NSURL) {
@@ -40,7 +29,7 @@ func setDesktopBackground(imgUrl: NSURL) {
     if workspace.setDesktopImageURL(imgUrl, forScreen: screen, options: nil, error: &error) {
         println("Desktop Background successfully set to \(imgUrl.description).")
     } else {
-        println("!! Setting Desktop Background failed: \(error?.localizedDescription)")
+        println("!! Setting Desktop Background failed: \(error!.localizedDescription)")
     }
     dispatch_semaphore_signal(sem);
     
@@ -53,9 +42,24 @@ func downloadCompleted(location: NSURL!, response: NSURLResponse!, error: NSErro
         setDesktopBackground(location)
     }
 }
-var downloadTask = NSURLSession.sharedSession().downloadTaskWithURL(NSURL(string: url)!,
-    completionHandler: downloadCompleted)
 
-downloadTask.resume()
+
+let flickrFavsUrl = NSURL(string: flickrRestUrl)
+
+let flickrFavsDelegate = FlickrFavsParserDelegate()
+var xmlParser = NSXMLParser(contentsOfURL: flickrFavsUrl)!
+xmlParser.delegate = flickrFavsDelegate
+println("Getting and parsing Favorite Photos of Flickr User '\(flickrUserId)' with Size 'k' (2048 px min)...")
+xmlParser.parse()
+let urls = flickrFavsDelegate.getUrls()
+println("\(urls.count) Photos found.")
+if let url = urls.first {
+    println("Downloading first Photo from \(url) ...")
+    let downloadTask = NSURLSession.sharedSession().downloadTaskWithURL(NSURL(string: url)!,
+        completionHandler: downloadCompleted)
+    
+    downloadTask.resume()
+
+}
+
 dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER)
-
