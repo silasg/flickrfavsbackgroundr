@@ -32,9 +32,7 @@ public class FlickFavsBackgroudR {
         
         if let url = urls.first {
             println("Downloading first Photo from \(url) ...")
-            let downloadTask = NSURLSession.sharedSession().downloadTaskWithURL(NSURL(string: url)!,
-                completionHandler: setWallpaperToDownloadResult)
-            downloadTask.resume()
+            downloadAsync(url, callback: setWallpaperToDownloadResult)
         }
         
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER)
@@ -46,6 +44,12 @@ public class FlickFavsBackgroudR {
         let xmlParser = NSXMLParser(contentsOfURL: flickrFavsUrl)!
         xmlParser.delegate = delegate
         return xmlParser
+    }
+    
+    private func downloadAsync(url: String, callback: ((NSURL!, NSURLResponse!, NSError!) -> Void)?) {
+        let downloadTask = NSURLSession.sharedSession().downloadTaskWithURL(NSURL(string: url)!,
+            completionHandler: callback)
+        downloadTask.resume()
     }
     
     private func setWallpaperToDownloadResult(location: NSURL!, response: NSURLResponse!, error: NSError!) {
@@ -66,8 +70,6 @@ public class FlickFavsBackgroudR {
         } else {
             println("!! Setting Desktop Background failed: \(error!.localizedDescription)")
         }
-        dispatch_semaphore_signal(sem);
-        
+        dispatch_semaphore_signal(sem);        
     }
-
 }
