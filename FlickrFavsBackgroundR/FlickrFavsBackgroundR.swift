@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import Cocoa
 
-public class FlickFavsBackgroudR {
+public class FlickrFavsBackgroudR {
 
     let flickrApiKey: String
     let flickrUserId: String
@@ -32,7 +31,7 @@ public class FlickFavsBackgroudR {
         
         if let url = urls.first {
             println("Downloading first Photo from \(url) ...")
-            downloadAsync(url, callback: setWallpaperToDownloadResult)
+            downloadAsync(url, callback: downloadCompleted)
         }
         
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER)
@@ -52,24 +51,12 @@ public class FlickFavsBackgroudR {
         downloadTask.resume()
     }
     
-    private func setWallpaperToDownloadResult(location: NSURL!, response: NSURLResponse!, error: NSError!) {
+    private func downloadCompleted(location: NSURL!, response: NSURLResponse!, error: NSError!) {
         if let err = error {
             println("!! Downloading Image failed: \(err.localizedDescription)")
         } else {
-            setWallpaperToImageFile(location)
+            ImgFileTools.setWallpaperToDownloadResult(location, response: response)
         }
-    }
-    
-    private func setWallpaperToImageFile(imgUrl: NSURL) {
-        var error : NSError?
-        let workspace = NSWorkspace.sharedWorkspace()
-        let mainScreen = NSScreen.mainScreen()!
-        
-        if workspace.setDesktopImageURL(imgUrl, forScreen: mainScreen, options: nil, error: &error) {
-            println("Desktop Background successfully set to \(imgUrl.description).")
-        } else {
-            println("!! Setting Desktop Background failed: \(error!.localizedDescription)")
-        }
-        dispatch_semaphore_signal(sem);        
+        dispatch_semaphore_signal(sem);
     }
 }

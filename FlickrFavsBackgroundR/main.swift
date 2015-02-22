@@ -12,5 +12,5 @@ let flickrApiKey = "794d6625970fac78530fb593c46d7a34"
 
 let flickrUserId = "66956608@N06"
 
-let backgroundR = FlickFavsBackgroudR(flickrApiKey: flickrApiKey, flickrUserId: flickrUserId)
+let backgroundR = FlickrFavsBackgroudR(flickrApiKey: flickrApiKey, flickrUserId: flickrUserId)
 backgroundR.go()
