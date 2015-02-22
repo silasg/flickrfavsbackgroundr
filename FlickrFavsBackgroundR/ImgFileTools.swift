@@ -12,7 +12,8 @@ import Cocoa
 public class ImgFileTools {
     
     public class func setWallpaperToDownloadResult(location: NSURL!, response: NSURLResponse!) {
-        let imageFolder = "/Users/silas/Library/FlickrBackgroundR/"
+        // TODO: Refactoring hier und gar nicht erst runterladen, wenn das Bild schon da ist
+        let imageFolder = "\(NSHomeDirectory())/Library/FlickrBackgroundR/"
         var error: NSError? = nil
         let fm = NSFileManager.defaultManager()
         if !fm.fileExistsAtPath(imageFolder) {
@@ -26,25 +27,36 @@ public class ImgFileTools {
         if !fm.fileExistsAtPath(dest) {
             println("Moving \(src) to \(dest) ...")
             if fm.moveItemAtPath(src, toPath: dest , error: &error) {
-                setWallpaperToImageFile(NSURL(fileURLWithPath: dest)!)
+                setWallpaperToImageFile(dest)
             } else {
-                println("!! Move file failed: \(error?.localizedDescription)")
+                println("!! Move file failed: \(error!.localizedDescription)")
             }
         } else {
             println("File \(dest) already exists.")
-            // TODO: random bild auswählen und als Hintergund setzen
+            let existingFiles = fm.contentsOfDirectoryAtPath(imageFolder, error: &error)?.filter { (s) in s.substringToIndex(1) != "." }
+            if error == nil {
+                let imgCount = existingFiles!.count
+                println ("Seeting one of \(imgCount) images as wallpaper ...")
+                let picIndex = Int(arc4random_uniform(UInt32(imgCount)))
+                let picFile = imageFolder + existingFiles![picIndex].description
+                setWallpaperToImageFile(picFile)
+            } else {
+                println("!! Getting existing files failed: \(error!.localizedDescription)")
+            }
+            
         }
     }
     
-    private class func setWallpaperToImageFile(imgUrl: NSURL) {
+    private class func setWallpaperToImageFile(imgPath: String) {
         var error : NSError?
         let workspace = NSWorkspace.sharedWorkspace()
         let mainScreen = NSScreen.mainScreen()!
+        let imgUrl = NSURL(fileURLWithPath: imgPath)!
         
         if workspace.setDesktopImageURL(imgUrl, forScreen: mainScreen, options: nil, error: &error) {
-            println("Desktop Background successfully set to \(imgUrl.description).")
+            println("Wallpaper successfully set to \(imgPath).")
         } else {
-            println("!! Setting Desktop Background failed: \(error!.localizedDescription)")
+            println("!! Setting wallpaper to \(imgPath) failed: \(error!.localizedDescription)")
         }
     }
     
