@@ -43,6 +43,8 @@ public class FlickrFavsBackgroudR {
                 println("Latest photo \(fileName) is already in library.")
                 imageLibrary.setRandomExistingWallpaper()
             }
+        } else {
+            println("Are you sure, that you provided correct flickrApiKey and flickrUserId?")
         }
         
     }
