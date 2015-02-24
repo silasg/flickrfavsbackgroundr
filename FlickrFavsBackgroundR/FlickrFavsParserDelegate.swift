@@ -9,7 +9,7 @@
 import Foundation
 
 public class FlickrFavsParserDelegate: NSObject, NSXMLParserDelegate {
-    var imgUrls = [(Int, String)]()
+    private var imgUrls = [(Int, String)]()
     
     func parser(parser: NSXMLParser!, didStartElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!, attributes attributeDict: NSDictionary!) {
         if elementName == "photo" {

@@ -10,11 +10,11 @@ import Foundation
 
 public class FlickrFavsBackgroudR {
 
-    let flickrApiKey: String
-    let flickrUserId: String
-    let flickrFetchCount: Int
-    let imageLibrary: FlickrFavsLibrary
-    let sem = dispatch_semaphore_create(0)
+    private let flickrApiKey: String
+    private let flickrUserId: String
+    private let flickrFetchCount: Int
+    private let imageLibrary: FlickrFavsLibrary
+    private let sem = dispatch_semaphore_create(0)
 
     init(flickrApiKey: String, flickrUserId: String, libraryPath: String, flickrFetchCount: Int = 100) {
         self.flickrApiKey = flickrApiKey
