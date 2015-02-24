@@ -13,30 +13,38 @@ public class FlickrFavsBackgroudR {
     let flickrApiKey: String
     let flickrUserId: String
     let flickrFetchCount: Int
-    let imgTools: ImageFileTools
+    let imageLibrary: FlickrFavsLibrary
     let sem = dispatch_semaphore_create(0)
 
     init(flickrApiKey: String, flickrUserId: String, libraryPath: String, flickrFetchCount: Int = 100) {
         self.flickrApiKey = flickrApiKey
         self.flickrUserId = flickrUserId
         self.flickrFetchCount = flickrFetchCount
-        self.imgTools = ImageFileTools(libraryPath: libraryPath)
+        self.imageLibrary = FlickrFavsLibrary(libraryPath: libraryPath)
     }
     
     public func go() {
         let flickrFavsDelegate = FlickrFavsParserDelegate()
         let xmlParser = createParser(flickrFavsDelegate)
-        println("Getting and parsing Favorite Photos of Flickr User '\(flickrUserId)' with Size 'k' (2048 px min)...")
+        
+        println("Getting and parsing favorite photos of Flickr user '\(flickrUserId)' with size 'k' (2048 px min) ...")
         xmlParser.parse()
+        
         let urls = flickrFavsDelegate.getUrls()
-        println("\(urls.count) Photos found.")
+        println("\(urls.count) photos found.")
         
         if let url = urls.first {
-            println("Downloading first Photo from \(url) ...")
-            downloadAsync(url, callback: downloadCompleted)
+            let fileName = url.lastPathComponent
+            if !imageLibrary.contains(fileName) {
+                println("Downloading first photo from \(url) ...")
+                downloadAsync(url, callback: downloadCompleted)
+                dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER)
+            } else {
+                println("Latest photo \(fileName) is already in library.")
+                imageLibrary.setRandomExistingWallpaper()
+            }
         }
         
-        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER)
     }
     
     private func createParser(delegate: NSXMLParserDelegate) -> NSXMLParser {
@@ -56,8 +64,11 @@ public class FlickrFavsBackgroudR {
     private func downloadCompleted(location: NSURL!, response: NSURLResponse!, error: NSError!) {
         if let err = error {
             println("!! Downloading Image failed: \(err.localizedDescription)")
+            exit(11)
         } else {
-            imgTools.setWallpaperToDownloadResult(location, response: response)
+            let origPath = location.path!
+            let nameInLibrary = response.URL!.lastPathComponent!
+            imageLibrary.moveInLibrary(origPath, nameInLibrary: nameInLibrary)
         }
         dispatch_semaphore_signal(sem);
     }

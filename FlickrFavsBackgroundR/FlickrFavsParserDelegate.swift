@@ -21,6 +21,6 @@ public class FlickrFavsParserDelegate: NSObject, NSXMLParserDelegate {
     }
     
     public func getUrls() -> Array<String> {
-        return imgUrls.sorted({ $0.0 > $1.0 }).map({$0.1})
+        return imgUrls.sorted { $0.0 > $1.0 }.map {$0.1} 
     }
 }
