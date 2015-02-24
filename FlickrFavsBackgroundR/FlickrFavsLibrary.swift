@@ -37,9 +37,7 @@ public class FlickrFavsLibrary {
         var error: NSError? = nil
         let dest = libraryPath + nameInLibrary
         println("Moving \(path) to \(dest) ...")
-        if fm.moveItemAtPath(path, toPath: dest , error: &error) {
-            setWallpaperToImageFile(dest)
-        } else {
+        if !fm.moveItemAtPath(path, toPath: dest , error: &error) {
             println("!! Move file failed: \(error!.localizedDescription)")
             exit(22)
         }
@@ -53,14 +51,20 @@ public class FlickrFavsLibrary {
             println ("Setting one of \(imgCount) existing images as wallpaper ...")
             let picIndex = Int(arc4random_uniform(UInt32(imgCount)))
             let picFile = libraryPath + existingFiles![picIndex].description
-            setWallpaperToImageFile(picFile)
+            setWallpaperToPath(picFile)
         } else {
             println("!! Getting existing files failed: \(error!.localizedDescription)")
             exit(23)
         }
     }
     
-    private func setWallpaperToImageFile(imgPath: String) {
+    public func setWallpaper(nameInLibrary: String) {
+        let path = libraryPath + nameInLibrary
+        println("Setting wallpaper to \(path) ...")
+        setWallpaperToPath(path)
+    }
+    
+    private func setWallpaperToPath(imgPath: String) {
         var error : NSError?
         let workspace = NSWorkspace.sharedWorkspace()
         let mainScreen = NSScreen.mainScreen()!

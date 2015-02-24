@@ -69,6 +69,7 @@ public class FlickrFavsBackgroudR {
             let origPath = location.path!
             let nameInLibrary = response.URL!.lastPathComponent!
             imageLibrary.moveInLibrary(origPath, nameInLibrary: nameInLibrary)
+            imageLibrary.setWallpaper(nameInLibrary)
         }
         dispatch_semaphore_signal(sem);
     }
