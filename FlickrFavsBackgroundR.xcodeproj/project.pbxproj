@@ -10,7 +10,7 @@
 		1E467B7E1A85302100018C61 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E467B7D1A85302100018C61 /* main.swift */; };
 		1E467B851A85308000018C61 /* FlickrFavsParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E467B841A85308000018C61 /* FlickrFavsParserDelegate.swift */; };
 		1EC1BF561A927EBB000D0E43 /* FlickrFavsBackgroundR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1BF551A927EBB000D0E43 /* FlickrFavsBackgroundR.swift */; };
-		1EC1BF581A9A5EE7000D0E43 /* ImgFileTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1BF571A9A5EE7000D0E43 /* ImgFileTools.swift */; };
+		1EC1BF581A9A5EE7000D0E43 /* FlickrFavsLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC1BF571A9A5EE7000D0E43 /* FlickrFavsLibrary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,7 +30,7 @@
 		1E467B7D1A85302100018C61 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		1E467B841A85308000018C61 /* FlickrFavsParserDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrFavsParserDelegate.swift; sourceTree = "<group>"; };
 		1EC1BF551A927EBB000D0E43 /* FlickrFavsBackgroundR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrFavsBackgroundR.swift; sourceTree = "<group>"; };
-		1EC1BF571A9A5EE7000D0E43 /* ImgFileTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImgFileTools.swift; sourceTree = "<group>"; };
+		1EC1BF571A9A5EE7000D0E43 /* FlickrFavsLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrFavsLibrary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +66,7 @@
 				1E467B7D1A85302100018C61 /* main.swift */,
 				1E467B841A85308000018C61 /* FlickrFavsParserDelegate.swift */,
 				1EC1BF551A927EBB000D0E43 /* FlickrFavsBackgroundR.swift */,
-				1EC1BF571A9A5EE7000D0E43 /* ImgFileTools.swift */,
+				1EC1BF571A9A5EE7000D0E43 /* FlickrFavsLibrary.swift */,
 			);
 			path = FlickrFavsBackgroundR;
 			sourceTree = "<group>";
@@ -130,7 +130,7 @@
 				1E467B851A85308000018C61 /* FlickrFavsParserDelegate.swift in Sources */,
 				1E467B7E1A85302100018C61 /* main.swift in Sources */,
 				1EC1BF561A927EBB000D0E43 /* FlickrFavsBackgroundR.swift in Sources */,
-				1EC1BF581A9A5EE7000D0E43 /* ImgFileTools.swift in Sources */,
+				1EC1BF581A9A5EE7000D0E43 /* FlickrFavsLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
