@@ -13,12 +13,14 @@ public class FlickrFavsBackgroudR {
     let flickrApiKey: String
     let flickrUserId: String
     let flickrFetchCount: Int
+    let imgTools: ImageFileTools
     let sem = dispatch_semaphore_create(0)
 
-    init(flickrApiKey: String, flickrUserId: String, flickrFetchCount: Int = 100) {
+    init(flickrApiKey: String, flickrUserId: String, libraryPath: String, flickrFetchCount: Int = 100) {
         self.flickrApiKey = flickrApiKey
         self.flickrUserId = flickrUserId
         self.flickrFetchCount = flickrFetchCount
+        self.imgTools = ImageFileTools(libraryPath: libraryPath)
     }
     
     public func go() {
@@ -55,7 +57,7 @@ public class FlickrFavsBackgroudR {
         if let err = error {
             println("!! Downloading Image failed: \(err.localizedDescription)")
         } else {
-            ImgFileTools.setWallpaperToDownloadResult(location, response: response)
+            imgTools.setWallpaperToDownloadResult(location, response: response)
         }
         dispatch_semaphore_signal(sem);
     }

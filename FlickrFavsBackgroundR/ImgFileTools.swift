@@ -9,21 +9,26 @@
 import Foundation
 import Cocoa
 
-public class ImgFileTools {
+public class ImageFileTools {
     
-    public class func setWallpaperToDownloadResult(location: NSURL!, response: NSURLResponse!) {
+    let libraryPath : String
+    
+    public init(libraryPath: String) {
+        self.libraryPath = libraryPath
+    }
+    
+    public func setWallpaperToDownloadResult(location: NSURL!, response: NSURLResponse!) {
         // TODO: Refactoring hier und gar nicht erst runterladen, wenn das Bild schon da ist
-        let imageFolder = "\(NSHomeDirectory())/Library/FlickrBackgroundR/"
         var error: NSError? = nil
         let fm = NSFileManager.defaultManager()
-        if !fm.fileExistsAtPath(imageFolder) {
-            fm.createDirectoryAtPath(imageFolder, withIntermediateDirectories: false, attributes: nil, error: &error)
+        if !fm.fileExistsAtPath(libraryPath) {
+            fm.createDirectoryAtPath(libraryPath, withIntermediateDirectories: false, attributes: nil, error: &error)
         }
         if let err = error {
-            println("!! Creating the directory \(imageFolder) failed: \(error?.localizedDescription)")
+            println("!! Creating the directory \(libraryPath) failed: \(error?.localizedDescription)")
         }
         let src = location.path!
-        let dest = imageFolder + response.URL!.lastPathComponent!
+        let dest = libraryPath + response.URL!.lastPathComponent!
         if !fm.fileExistsAtPath(dest) {
             println("Moving \(src) to \(dest) ...")
             if fm.moveItemAtPath(src, toPath: dest , error: &error) {
@@ -33,12 +38,12 @@ public class ImgFileTools {
             }
         } else {
             println("File \(dest) already exists.")
-            let existingFiles = fm.contentsOfDirectoryAtPath(imageFolder, error: &error)?.filter { (s) in s.substringToIndex(1) != "." }
+            let existingFiles = fm.contentsOfDirectoryAtPath(libraryPath, error: &error)?.filter { (s) in s.substringToIndex(1) != "." }
             if error == nil {
                 let imgCount = existingFiles!.count
                 println ("Seeting one of \(imgCount) images as wallpaper ...")
                 let picIndex = Int(arc4random_uniform(UInt32(imgCount)))
-                let picFile = imageFolder + existingFiles![picIndex].description
+                let picFile = libraryPath + existingFiles![picIndex].description
                 setWallpaperToImageFile(picFile)
             } else {
                 println("!! Getting existing files failed: \(error!.localizedDescription)")
@@ -47,7 +52,7 @@ public class ImgFileTools {
         }
     }
     
-    private class func setWallpaperToImageFile(imgPath: String) {
+    private func setWallpaperToImageFile(imgPath: String) {
         var error : NSError?
         let workspace = NSWorkspace.sharedWorkspace()
         let mainScreen = NSScreen.mainScreen()!
