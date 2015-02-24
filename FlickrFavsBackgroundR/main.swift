@@ -8,7 +8,7 @@
 
 import Foundation
 
-if Process.arguments.count != 4 {
+if Process.arguments.count != 3 {
     println("Usage: FlickrFavsBackgroundR flickrApiKey flickrUserId")
     println("Example using fictional values: FlickrFavsBackgroundR 714d0642970fac78530fb593c46dfa34 66081508@N42")
     exit (1)
