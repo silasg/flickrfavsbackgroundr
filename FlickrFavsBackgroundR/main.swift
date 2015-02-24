@@ -8,11 +8,18 @@
 
 import Foundation
 
-let flickrApiKey = "794d6625970fac78530fb593c46d7a34"
+if Process.arguments.count != 4 {
+    println("Usage: FlickrFavsBackgroundR flickrApiKey flickrUserId")
+    println("Example using fictional values: FlickrFavsBackgroundR 714d0642970fac78530fb593c46dfa34 66081508@N42")
+    exit (1)
+}
 
-let flickrUserId = "66956608@N06"
+let flickrApiKey = Process.arguments[1]
+
+let flickrUserId = Process.arguments[2]
 
 let libraryPath = "\(NSHomeDirectory())/Library/FlickrBackgroundR/"
+
 
 let backgroundR = FlickrFavsBackgroudR(flickrApiKey: flickrApiKey, flickrUserId: flickrUserId, libraryPath: libraryPath)
 backgroundR.go()
