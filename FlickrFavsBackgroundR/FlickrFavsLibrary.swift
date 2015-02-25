@@ -48,7 +48,7 @@ public class FlickrFavsLibrary {
         let existingFiles = fm.contentsOfDirectoryAtPath(libraryPath, error: &error)?.filter { (s) in s.substringToIndex(1) != "." }
         if error == nil {
             let imgCount = existingFiles!.count
-            println ("Setting one of \(imgCount) existing images as wallpaper ...")
+            println ("Choosing one of \(imgCount) existing images as wallpaper by random ...")
             let picIndex = Int(arc4random_uniform(UInt32(imgCount)))
             let picFile = libraryPath + existingFiles![picIndex].description
             setWallpaperToPath(picFile)

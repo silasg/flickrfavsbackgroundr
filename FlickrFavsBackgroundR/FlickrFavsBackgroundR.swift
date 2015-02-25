@@ -12,14 +12,14 @@ public class FlickrFavsBackgroudR {
 
     private let flickrApiKey: String
     private let flickrUserId: String
-    private let flickrFetchCount: Int
+    private let fetchCount: Int
     private let imageLibrary: FlickrFavsLibrary
     private let sem = dispatch_semaphore_create(0)
 
-    init(flickrApiKey: String, flickrUserId: String, libraryPath: String, flickrFetchCount: Int = 100) {
+    init(flickrApiKey: String, flickrUserId: String, libraryPath: String, fetchCount: Int = 100) {
         self.flickrApiKey = flickrApiKey
         self.flickrUserId = flickrUserId
-        self.flickrFetchCount = flickrFetchCount
+        self.fetchCount = fetchCount
         self.imageLibrary = FlickrFavsLibrary(libraryPath: libraryPath)
     }
     
@@ -31,7 +31,7 @@ public class FlickrFavsBackgroudR {
         xmlParser.parse()
         
         let urls = flickrFavsDelegate.getUrls()
-        println("\(urls.count) photos found.")
+        println("\(urls.count) photos out of \(fetchCount) found (fetchCount).")
         
         if let url = urls.first {
             let fileName = url.lastPathComponent
@@ -44,13 +44,13 @@ public class FlickrFavsBackgroudR {
                 imageLibrary.setRandomExistingWallpaper()
             }
         } else {
-            println("Are you sure, that you provided correct flickrApiKey and flickrUserId?")
+            println("Are you sure, that you provided correct flickrApiKey and flickrUserId? If yes, try increasing the fetchCount parameter.")
         }
         
     }
     
     private func createParser(delegate: NSXMLParserDelegate) -> NSXMLParser {
-        let flickrRestUrl = "https://api.flickr.com/services/rest/?method=flickr.favorites.getPublicList&api_key=\(flickrApiKey)&user_id=\(flickrUserId)&per_page=\(flickrFetchCount)&extras=url_k"
+        let flickrRestUrl = "https://api.flickr.com/services/rest/?method=flickr.favorites.getPublicList&api_key=\(flickrApiKey)&user_id=\(flickrUserId)&per_page=\(fetchCount)&extras=url_k"
         let flickrFavsUrl = NSURL(string: flickrRestUrl)
         let xmlParser = NSXMLParser(contentsOfURL: flickrFavsUrl)!
         xmlParser.delegate = delegate
