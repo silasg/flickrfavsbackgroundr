@@ -67,13 +67,17 @@ public class FlickrFavsLibrary {
     private func setWallpaperToPath(imgPath: String) {
         var error : NSError?
         let workspace = NSWorkspace.sharedWorkspace()
-        let mainScreen = NSScreen.mainScreen()!
         let imgUrl = NSURL(fileURLWithPath: imgPath)!
-        
-        if workspace.setDesktopImageURL(imgUrl, forScreen: mainScreen, options: nil, error: &error) {
-            println("Wallpaper successfully set to \(imgPath).")
+        if let screens = NSScreen.screens() {
+            for screen in screens.map({ $0 as NSScreen }) {
+                if workspace.setDesktopImageURL(imgUrl, forScreen: screen, options: nil, error: &error) {
+                    println("Wallpaper at \(screen) successfully set to \(imgPath).")
+                } else {
+                    println("!! Setting wallpaper at \(screen) to \(imgPath) failed: \(error!.localizedDescription)")
+                }
+            }
         } else {
-            println("!! Setting wallpaper to \(imgPath) failed: \(error!.localizedDescription)")
+            println("!! No screens found.")
             exit(24)
         }
     }
