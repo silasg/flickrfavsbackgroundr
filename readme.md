@@ -9,7 +9,7 @@ FlickrFavsBackgroundR only considers images of size 'k' (large, 2048px on longes
 I wrote it because there was no tool to automatically download favorite photos and set them as wallpaper and as a programming exercise to learn Apple's new programming language Swift.
 
 ## Usage
-You can run the app by executing `FlickrFavsBackgroundR flickrApiKey flickrUserId [fetchCount]` in a terminal or --- more common --- place this command in a script. I personally use the app to change the background every time my computer wakes up from sleep using [SleepWatcher](http://www.bernhard-baehr.de/) to excecute a wakeup script.
+You can run the app by executing `./FlickrFavsBackgroundR flickrApiKey flickrUserId [fetchCount]` in a terminal or --- more common --- place this command in a script. I personally use the app to change the background every time my computer wakes up from sleep using [SleepWatcher](http://www.bernhard-baehr.de/) to excecute a wakeup script.
 
 ### Parameters
 | Parameter    | Description
@@ -19,7 +19,7 @@ You can run the app by executing `FlickrFavsBackgroundR flickrApiKey flickrUserI
 | fetchCount   | an optional number between 1 and 500, setting how many images should be requested to find one of size 'k'.
 
 ### Example (with fictional values)
-`FlickrFavsBackgroundR 714d0642970fac78530fb593c46dfa34 66081508@N42 50`
+`./FlickrFavsBackgroundR 714d0642970fac78530fb593c46dfa34 66081508@N42 50`
 
 ### Getting API Keys and User IDs
 You can get your API key for free in [Flickr's App Garden](https://www.flickr.com/services/api/misc.api_keys.html).
