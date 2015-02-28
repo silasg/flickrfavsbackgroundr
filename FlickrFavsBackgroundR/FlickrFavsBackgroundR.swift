@@ -65,7 +65,7 @@ public class FlickrFavsBackgroudR {
     
     private func downloadCompleted(location: NSURL!, response: NSURLResponse!, error: NSError!) {
         if let err = error {
-            println("!! Downloading Image failed: \(err.localizedDescription)")
+            println("!! Downloading photo failed: \(err.localizedDescription)")
             exit(11)
         } else {
             let origPath = location.path!
